@@ -78,8 +78,8 @@ export default function Dashboard() {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mb-10">
-          <ActionButton text="➕ Report Issue" href="/report" primary />
-          <ActionButton text="🏆 Rewards" href="/rewards" />
+          <ActionButton text="Report Issue" href="/report" primary />
+          <ActionButton text="Rewards" href="/rewards" />
         </div>
 
         {/* Recent Issues */}

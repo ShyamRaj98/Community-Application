@@ -5,9 +5,21 @@ import api from "../services/api";
 export default function Rewards() {
   const { user } = useAuth();
   const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/users/leaderboard").then((res) => setLeaders(res.data));
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await api.get("/users/leaderboard");
+        setLeaders(res.data);
+      } catch (err) {
+        console.error("Leaderboard error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
   }, []);
 
   return (
@@ -37,16 +49,36 @@ export default function Rewards() {
         {/* Leaderboard */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-700">
-              Leaderboard
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-700">Leaderboard</h2>
           </div>
 
-          {leaders.length === 0 ? (
+          {/* Loading Skeleton */}
+          {loading && (
+            <ul className="divide-y animate-pulse">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <li key={i} className="px-6 py-4 flex justify-between">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-6 bg-gray-200 rounded" />
+                    <div>
+                      <div className="h-4 w-32 bg-gray-200 rounded mb-2" />
+                      <div className="h-3 w-24 bg-gray-100 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-4 w-16 bg-gray-200 rounded" />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Empty State */}
+          {!loading && leaders.length === 0 && (
             <div className="p-6 text-center text-gray-500">
-              No leaderboard data yet
+              No leaderboard data yet 🚀
             </div>
-          ) : (
+          )}
+
+          {/* Data */}
+          {!loading && leaders.length > 0 && (
             <ul className="divide-y">
               {leaders.map((u, i) => {
                 const isCurrentUser = user?._id === u._id;
