@@ -14,7 +14,6 @@ import Dashboard from "./pages/Dashboard";
 import ReportIssue from "./pages/ReportIssue";
 import IssueDetails from "./pages/IssueDetails";
 import Rewards from "./pages/Rewards";
-
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 import AdminDashboard from "./pages/AdminDashboard";
